@@ -49,6 +49,7 @@ AppAsset::register($this);
             )
             . Html::endForm()
             . '</li>';
+        array_push($menuItems,  ['label' => 'Управление пользователями', 'url' => ['/user/index']]);
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
