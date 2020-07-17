@@ -46,6 +46,7 @@ return [
                 'about' => 'site/about',
                 'contact' => 'site/contact',
                 'login' => 'site/login',
+                'logout' => 'site/logout',
                 'user/<action:\w+>' => 'user/<action>',
                 'crudpost/<action:\w+>' => 'crudpost/<action>',
                 ['class' => 'yii\rest\UrlRule',

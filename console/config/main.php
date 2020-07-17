@@ -22,6 +22,9 @@ return [
           ],
     ],
     'components' => [
+        'request' => [ 
+            'parsers' => new \yii\helpers\UnsetArrayValue() 
+        ],
         'log' => [
             'targets' => [
                 [
