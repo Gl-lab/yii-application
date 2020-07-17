@@ -20,6 +20,16 @@ class PostController extends ActiveController
         return $actions;
     }
 
+    /**
+     * @api {post} posts/new
+     * @apiName new
+     * @apiGroup Post
+     *
+     * @apiParam {String} accessToken accessToken of the User.
+     * @apiParam {String} text The text of the post.
+     *
+     * @apiSuccess {[]} EmptyArray  [] <- this is a square, and a square is good.
+     */
     public function actionNew()
     {
         $request  = \Yii::$app->request;
@@ -39,7 +49,17 @@ class PostController extends ActiveController
         }
         return ['error' => 'Неверные данные'];
     }
-
+    /**
+     * @api {get} posts/all
+     * @apiName all
+     * @apiGroup Post
+     *
+     * @apiParam {String} accessToken accessToken of the User.
+     * @apiParam {Number} offset How many records have already been uploaded. Optional field
+     * @apiParam {Number} limit How many records to return. Optional field
+     *
+     * @apiSuccess {Object[]} Post  Posts list
+     */
     public function actionAll()
     {
         $request  = \Yii::$app->request;
@@ -55,7 +75,17 @@ class PostController extends ActiveController
         }
         return ['error' => 'Неверные данные'];
     }
-
+    /**
+     * @api {get} posts/my
+     * @apiName my
+     * @apiGroup Post
+     *
+     * @apiParam {String} accessToken accessToken of the User.
+     * @apiParam {Number} offset How many records have already been uploaded. Optional field
+     * @apiParam {Number} limit How many records to return. Optional field
+     *
+     * @apiSuccess {Object[]} Post  Posts list of user
+     */
     public function actionMy()
     {
         $request  = \Yii::$app->request;

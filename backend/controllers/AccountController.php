@@ -21,6 +21,17 @@ class AccountController extends ActiveController
         return $actions;
     }
 
+
+    /**
+     * @api {post} accounts/login
+     * @apiName login
+     * @apiGroup Accounts
+     *
+     * @apiParam {String} login Users email.
+     * @apiParam {String} password Users password.
+     *
+     * @apiSuccess {String} accessToken  accessToken of the User.
+     */
     public function actionLogin()
     {
         $request  = \Yii::$app->request;
@@ -38,7 +49,17 @@ class AccountController extends ActiveController
         }
         return $result;
     }
-
+    /**
+     * @api {post} accounts/register
+     * @apiName register
+     * @apiGroup Accounts
+     *
+     * @apiParam {String} name Users nickname.
+     * @apiParam {String} login Users email.
+     * @apiParam {String} password Users password.
+     *
+     * @apiSuccess {String} accessToken  accessToken of the User.
+     */
     public function actionRegister()
     {
         $result = [];

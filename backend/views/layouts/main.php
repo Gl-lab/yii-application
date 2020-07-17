@@ -50,6 +50,7 @@ AppAsset::register($this);
             . Html::endForm()
             . '</li>';
         array_push($menuItems,  ['label' => 'Управление пользователями', 'url' => ['/user/index']]);
+        array_push($menuItems,  ['label' => 'Управление постами', 'url' => ['/crudpost/index']]);
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
