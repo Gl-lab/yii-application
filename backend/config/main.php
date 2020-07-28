@@ -48,7 +48,7 @@ return [
                 'login' => 'site/login',
                 'logout' => 'site/logout',
                 'user/<action:\w+>' => 'user/<action>',
-                'crudpost/<action:\w+>' => 'crudpost/<action>',
+                'crudpost/<action:\w+>' => 'crud-post/<action>',
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'account',
                     'except' => ['delete','put','patch','get','head','post'],

@@ -10,7 +10,8 @@ class PostController extends ActiveController
 {
     public $modelClass = 'Post';
 
-    public function actions(){
+    public function actions()
+    {
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
@@ -35,19 +36,25 @@ class PostController extends ActiveController
         $request  = \Yii::$app->request;
         $accessToken = $request->post('accessToken');
         $text = $request->post('text');
-        if ($accessToken != null && $text != null){
+        if (!empty($accessToken) && !empty($text)) {
             $user = User::findIdentityByAccessToken($accessToken);
-            if ($user != null){
+            if (!empty($user)) {
                 $post = new Post();
-                $post->author_id = $user->getId();
+                $post->authorId = $user->getId();
                 $post->title = 'title';
                 $post->body = $text;
                 $post->save();
-                return [];
+                return [
+                    'success' => 'Пост успешно опубликован'
+                ];
             }
-            return ['error' => 'Ошибка авторизации'];
+            return [
+                'error' => 'Ошибка авторизации'
+            ];
         }
-        return ['error' => 'Неверные данные'];
+        return [
+            'error' => 'Неверные данные'
+        ];
     }
     /**
      * @api {get} posts/all
@@ -66,14 +73,21 @@ class PostController extends ActiveController
         $accessToken = $request->get('accessToken');
         $offset = $request->get('offset',0);
         $limit = $request->get('limit',10);
-        if ($accessToken != null){
+        if (!empty($accessToken)) {
             $user = User::findIdentityByAccessToken($accessToken);
-            if ($user != null){
-                return Post::find()->limit($limit)->offset($offset)->all();
+            if (!empty($user)) {
+                return Post::find()
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->all();
             }
-            return ['error' => 'Ошибка авторизации'];
+            return [
+                'error' => 'Ошибка авторизации'
+            ];
         }
-        return ['error' => 'Неверные данные'];
+        return [
+            'error' => 'Неверные данные'
+        ];
     }
     /**
      * @api {get} posts/my
@@ -92,13 +106,21 @@ class PostController extends ActiveController
         $accessToken = $request->get('accessToken');
         $offset = $request->get('offset',0);
         $limit = $request->get('limit',10);
-        if ($accessToken != null){
+        if (!empty($accessToken)) {
             $user = User::findIdentityByAccessToken($accessToken);
-            if ($user != null){
-                return Post::find()->where('author_id = :user_id', [':user_id' => $user->id])->limit($limit)->offset($offset)->all();
+            if (!empty($user)) {
+                return Post::find()
+                    ->where('authorId = :userId', [':userId' => $user->id])
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->all();
             }
-            return ['error' => 'Ошибка авторизации'];
+            return [
+                'error' => 'Ошибка авторизации'
+            ];
         }
-        return ['error' => 'Неверные данные'];
+        return [
+            'error' => 'Неверные данные'
+        ];
     }
 }

@@ -17,7 +17,7 @@ class PostSearch extends Post
     public function rules()
     {
         return [
-            [['id', 'author_id'], 'integer'],
+            [['id', 'authorId'], 'integer'],
             [['title', 'body'], 'safe'],
         ];
     }
@@ -59,7 +59,7 @@ class PostSearch extends Post
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'author_id' => $this->author_id,
+            'authorId' => $this->authorId,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

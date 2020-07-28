@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "post".
  *
  * @property int $id
- * @property int $author_id
+ * @property int $authorId
  * @property string|null $title
  * @property string|null $body
  *
@@ -30,11 +30,11 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['author_id'], 'required'],
-            [['author_id'], 'integer'],
+            [['authorId'], 'required'],
+            [['authorId'], 'integer'],
             [['body'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author_id' => 'id']],
+            [['authorId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['authorId' => 'id']],
         ];
     }
 
@@ -45,7 +45,7 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'author_id' => 'Author ID',
+            'authorId' => 'Author ID',
             'title' => 'Title',
             'body' => 'Body',
         ];
@@ -58,6 +58,6 @@ class Post extends \yii\db\ActiveRecord
      */
     public function getAuthor()
     {
-        return $this->hasOne(User::className(), ['id' => 'author_id']);
+        return $this->hasOne(User::className(), ['id' => 'authorId']);
     }
 }

@@ -11,9 +11,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CrudpostController implements the CRUD actions for Post model.
+ * CrudPostController implements the CRUD actions for Post model.
  */
-class CrudpostController extends Controller
+class CrudPostController extends Controller
 {
     /**
      * {@inheritdoc}

@@ -11,6 +11,6 @@ class AuthorRule extends \yii\rbac\Rule
     public $name = 'isAuthor';
     public function execute($user, $item, $params)
     {
-        return isset($params['post']) ? $params['post']->author_id == $user : false;
+        return isset($params['post']) ? $params['post']->authorId == $user : false;
     }
 }
