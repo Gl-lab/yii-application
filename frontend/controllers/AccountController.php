@@ -1,27 +1,15 @@
 <?php
 
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
-use yii\rest\ActiveController;
+use common\controllers\BaseController;
 use common\models\User;
 
 
-class AccountController extends ActiveController
+class AccountController extends BaseController
 {
     public $modelClass = 'User';
-
-    public function actions()
-    {
-        $actions = parent::actions();
-        unset($actions['create']);
-        unset($actions['update']);
-        unset($actions['delete']);
-        unset($actions['view']);
-        unset($actions['index']);
-        return $actions;
-    }
-
 
     /**
      * @api {post} accounts/login
@@ -49,7 +37,7 @@ class AccountController extends ActiveController
                 }
             }
             return [
-                'error' => 'Не верный формат входных параметров. Не указал email пользователя'
+                'error' => 'Неверно указан email или пароль пользователя'
             ];
         } 
         return [

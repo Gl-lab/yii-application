@@ -49,23 +49,6 @@ return [
                 'logout' => 'site/logout',
                 'user/<action:\w+>' => 'user/<action>',
                 'crudpost/<action:\w+>' => 'crud-post/<action>',
-                ['class' => 'yii\rest\UrlRule',
-                    'controller' => 'account',
-                    'except' => ['delete','put','patch','get','head','post'],
-                    'extraPatterns' => [
-                        'POST login' => 'login',
-                        'POST register' => 'register',
-                    ]
-                ],
-                ['class' => 'yii\rest\UrlRule',
-                    'controller' => 'post',
-                    'except' => ['delete','put','patch','get','head','post'],
-                    'extraPatterns' => [
-                        'POST new' => 'new',
-                        'GET all' => 'all',
-                        'GET my' => 'my',
-                    ]
-                ],
             ],
         ],
     ],

@@ -36,14 +36,36 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'site/index',
+                'about' => 'site/about',
+                'contact' => 'site/contact',
+                'login' => 'site/login',
+                'logout' => 'site/logout',
+                'signup' => 'site/signup',
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'account',
+                    'except' => ['delete','put','patch','get','head','post'],
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'POST register' => 'register',
+                    ]
+                ],
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'post',
+                    'except' => ['delete','put','patch','get','head','post'],
+                    'extraPatterns' => [
+                        'POST new' => 'new',
+                        'GET all' => 'all',
+                        'GET my' => 'my',
+                    ]
+                ],
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

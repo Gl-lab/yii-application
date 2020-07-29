@@ -1,26 +1,14 @@
 <?php
 
 
-namespace backend\controllers;
+namespace frontend\controllers;
 use common\models\Post;
-use yii\rest\ActiveController;
+use common\controllers\BaseController;
 use common\models\User;
 
-class PostController extends ActiveController
+class PostController extends BaseController
 {
     public $modelClass = 'Post';
-
-    public function actions()
-    {
-        $actions = parent::actions();
-        unset($actions['create']);
-        unset($actions['update']);
-        unset($actions['delete']);
-        unset($actions['view']);
-        unset($actions['index']);
-        return $actions;
-    }
-
     /**
      * @api {post} posts/new
      * @apiName new
@@ -29,7 +17,7 @@ class PostController extends ActiveController
      * @apiParam {String} accessToken accessToken of the User.
      * @apiParam {String} text The text of the post.
      *
-     * @apiSuccess {[]} EmptyArray  [] <- this is a square, and a square is good.
+     * @apiSuccess {Object[]} success.
      */
     public function actionNew()
     {
