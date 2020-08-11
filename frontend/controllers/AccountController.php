@@ -4,7 +4,6 @@
 namespace frontend\controllers;
 
 use common\controllers\BaseController;
-use common\models\User;
 use common\models\AuthForm;
 
 
@@ -48,29 +47,15 @@ class AccountController extends BaseController
      */
     public function actionRegister()
     {
-        $request  = \Yii::$app->request;
-        $name = $request->post('name');
-        $login = $request->post('login');
-        $password = $request->post('password');
-        if (empty($name) || empty($login) || empty($password)) 
+        $model = new AuthForm(['scenario' => AuthForm::SCENARIO_REGISTER]);
+        $model->load(\Yii::$app->request->post(), '');
+        $authKey = $model->registerUser();
+        if ($authKey) {
             return [
-            'error' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email, имя пользователя, пароль'
-            ];
-        
-        $user = User::findByEmail($login);
-        if (!empty($user)) 
-            return [
-                'error' => 'Пользователь с указанным email уже зарегистрирован'
-            ];
-
-        $user = new User();
-        $user->username = $name;
-        $user->email = $login;
-        $user->setPassword($password);
-        $user->generateAuthKey();
-        $user->save();
-        return [
-            'authKey' => $user->authKey
-        ];    
+                'authKey' => $authKey
+            ];      
+        } else {
+            return $model->errors;
+        }         
     }
 }

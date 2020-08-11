@@ -8,7 +8,7 @@ class AuthForm extends Model
 {
     public $login;
     public $password;
-    public $name;
+    public $email;
 
 
     private $_user;
@@ -23,21 +23,23 @@ class AuthForm extends Model
         return [
 
             [
-                ['login', 'password'], 
+                ['email', 'password'], 
                 'required', 
                 'on' => self::SCENARIO_LOGIN, 
                 'message' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email и пароль',
             ],
             [
-                ['login', 'password', 'name'], 
+                ['login', 'password', 'email'], 
                 'required', 
                 'on' => self::SCENARIO_REGISTER,
                 'message' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email, имя пользователя, пароль',
             ],
-            ['login', 'email'],
+            ['email', 'email'],
             [['password'], 'string'],
-            [['password'], 'string'],
+            [['login'], 'string'],
             ['password', 'validatePassword', 'on' => self::SCENARIO_LOGIN ],
+            ['email','validateExistEmail', 'on' => self::SCENARIO_REGISTER ],
+            ['login','validateExistLogin', 'on' => self::SCENARIO_REGISTER ],
         ];
     }
 
@@ -66,7 +68,7 @@ class AuthForm extends Model
     public function getAuthKey()
     {
         if ($this->validate()) {
-            return $this->getUser()->authKey;
+            return $this->_user->authKey;
         }
         
         return false;
@@ -80,7 +82,7 @@ class AuthForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByEmail($this->login);
+            $this->_user = User::findByEmail($this->email);
         }
 
         return $this->_user;
@@ -89,8 +91,49 @@ class AuthForm extends Model
     public function scenarios()
     {
         return [
-            self::SCENARIO_LOGIN => ['login', 'password'],
-            self::SCENARIO_REGISTER => ['name', 'login', 'password'],
+            self::SCENARIO_LOGIN => ['email', 'password'],
+            self::SCENARIO_REGISTER => ['email', 'login', 'password'],
         ];
+    }
+
+    public function userRegistry()
+    {
+        if ($this->validate()) {
+            return $this->_user->authKey;
+        }
+        
+        return false;
+    }
+
+    public function validateExistEmail($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+            if (!empty($user)) {
+                $this->addError($attribute, 'Пользователь с таким email уже существует');
+            }
+        }
+    }
+    public function validateExistLogin($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            if (!empty(User::findByUsername($this->login))) {
+                $this->addError($attribute, 'Пользователь с таким логином уже существует');
+            }
+        }
+    }
+
+    public function registerUser()
+    {
+        if ($this->validate()) {
+            $user = new User();
+            $user->username = $this->login;
+            $user->email = $this->email;
+            $user->setPassword($this->password);
+            $user->generateAuthKey();
+            $user->save();
+            return $user->authKey;
+        }
+        return false;
     }
 }
