@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 use common\controllers\BaseController;
 use common\models\User;
+use common\models\AuthForm;
 
 
 class AccountController extends BaseController
@@ -23,28 +24,16 @@ class AccountController extends BaseController
      */
     public function actionLogin()
     {
-        $request  = \Yii::$app->request;
-        $login = $request->post('login');
-        $password = $request->post('password');
-        $user = null;
-        if (!empty($login)) {
-            $user = User::findByEmail($login);
-            if (!empty($user)) {
-                if ($user->validatePassword($password)) {
-                    return [
-                        'authKey' => $user->authKey
-                    ];
-                }
-            }
+        $model = new AuthForm(['scenario' => AuthForm::SCENARIO_LOGIN]);
+        $model->load(\Yii::$app->request->post(), '');
+        $authKey = $model->getAuthKey();
+        if ($authKey) {
             return [
-                'error' => 'Неверно указан email или пароль пользователя'
-            ];
-        } 
-        return [
-                'error' => 'Не верный формат входных параметров. Не указал email пользователя'
-        ];
-        
-        
+                'authKey' => $authKey
+            ];      
+        } else {
+            return $model->errors;
+        }         
     }
     /**
      * @api {post} accounts/register
@@ -63,25 +52,25 @@ class AccountController extends BaseController
         $name = $request->post('name');
         $login = $request->post('login');
         $password = $request->post('password');
-        if (!empty($name) && !empty($login) && !empty($password)) {
-            $user = User::findByEmail($login);
-            if (empty($user)) {
-                $user = new User();
-                $user->username = $name;
-                $user->email = $login;
-                $user->setPassword($password);
-                $user->generateAuthKey();
-                $user->save();
-                return [
-                    'authKey' => $user->authKey
-                ];
-            }
+        if (empty($name) || empty($login) || empty($password)) 
+            return [
+            'error' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email, имя пользователя, пароль'
+            ];
+        
+        $user = User::findByEmail($login);
+        if (!empty($user)) 
             return [
                 'error' => 'Пользователь с указанным email уже зарегистрирован'
             ];
-        }
+
+        $user = new User();
+        $user->username = $name;
+        $user->email = $login;
+        $user->setPassword($password);
+        $user->generateAuthKey();
+        $user->save();
         return [
-            'error' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email, имя пользователя, пароль'
-        ];
+            'authKey' => $user->authKey
+        ];    
     }
 }
