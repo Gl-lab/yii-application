@@ -4,7 +4,7 @@
 namespace frontend\controllers;
 use common\models\Post;
 use common\controllers\BaseController;
-use common\models\User;
+use common\models\PostForm;
 
 class PostController extends BaseController
 {
@@ -21,28 +21,14 @@ class PostController extends BaseController
      */
     public function actionNew()
     {
-        $request  = \Yii::$app->request;
-        $accessToken = $request->post('accessToken');
-        $text = $request->post('text');
-        if (empty($accessToken) || empty($text)) 
-            return [
-                'error' => 'Неверные данные'
-            ];
-        
-        $user = User::findIdentityByAccessToken($accessToken);
-        if (empty($user)) 
-            return [
-                'error' => 'Ошибка авторизации'
-            ];
-        
-        $post = new Post();
-        $post->authorId = $user->getId();
-        $post->title = 'title';
-        $post->body = $text;
-        $post->save();
-        return [
-            'success' => 'Пост успешно опубликован'
-        ]; 
+        $model = new PostForm(['scenario' => PostForm::SCENARIO_NEW_POST]);
+        $model->load(\Yii::$app->request->post(), '');
+        $result = $model->createNewPost();
+        if ($result){
+            return $result; 
+        } else {
+            return $model->errors;
+        }
     }
     /**
      * @api {get} posts/all
@@ -57,25 +43,14 @@ class PostController extends BaseController
      */
     public function actionAll()
     {
-        $request  = \Yii::$app->request;
-        $accessToken = $request->get('accessToken');
-        $offset = $request->get('offset',0);
-        $limit = $request->get('limit',10);
-        if (empty($accessToken))
-            return [
-                'error' => 'Неверные данные'
-            ];
-        
-        $user = User::findIdentityByAccessToken($accessToken);
-        if (empty($user))
-            return [
-                'error' => 'Ошибка авторизации'
-            ];
-        
-        return Post::find()
-            ->limit($limit)
-            ->offset($offset)
-            ->all();  
+        $model = new PostForm(['scenario' => PostForm::SCENARIO_GET_POSTS]);
+        $model->load(\Yii::$app->request->get(), '');
+        $result = $model->getAllPosts();
+        if ($result){
+            return $result; 
+        } else {
+            return $model->errors;
+        }
     }
     /**
      * @api {get} posts/my
@@ -90,25 +65,13 @@ class PostController extends BaseController
      */
     public function actionMy()
     {
-        $request  = \Yii::$app->request;
-        $accessToken = $request->get('accessToken');
-        $offset = $request->get('offset',0);
-        $limit = $request->get('limit',10);
-        if (empty($accessToken)) 
-            return [
-                'error' => 'Неверные данные'
-            ];
-        
-        $user = User::findIdentityByAccessToken($accessToken);
-        if (empty($user)) 
-            return [
-                'error' => 'Ошибка авторизации'
-            ];
-        
-        return Post::find()
-            ->andWhere('authorId = :userId', [':userId' => $user->id])
-            ->limit($limit)
-            ->offset($offset)
-            ->all();
+        $model = new PostForm(['scenario' => PostForm::SCENARIO_GET_POSTS]);
+        $model->load(\Yii::$app->request->get(), '');
+        $result = $model->getUserPosts();
+        if ($result){
+            return $result; 
+        } else {
+            return $model->errors;
+        }
     }
 }
