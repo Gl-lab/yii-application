@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models;
-
+use common\models\basePost;
 use Yii;
 
 /**
@@ -14,50 +14,7 @@ use Yii;
  *
  * @property User $author
  */
-class Post extends \yii\db\ActiveRecord
+class Post extends basePost
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'post';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['authorId'], 'required'],
-            [['authorId'], 'integer'],
-            [['body'], 'string'],
-            [['title'], 'string', 'max' => 255],
-            [['authorId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['authorId' => 'id']],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'authorId' => 'Author ID',
-            'title' => 'Title',
-            'body' => 'Body',
-        ];
-    }
-
-    /**
-     * Gets query for [[Author]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAuthor()
-    {
-        return $this->hasOne(User::className(), ['id' => 'authorId']);
-    }
+    
 }

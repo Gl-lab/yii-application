@@ -21,18 +21,17 @@ class AuthForm extends Model
     public function rules()
     {
         return [
-
             [
                 ['email', 'password'], 
                 'required', 
                 'on' => self::SCENARIO_LOGIN, 
-                'message' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email и пароль',
+                'message' => 'Не верный формат входных параметров. Для входа должны быть указаны: email и пароль',
             ],
             [
                 ['login', 'password', 'email'], 
                 'required', 
                 'on' => self::SCENARIO_REGISTER,
-                'message' => 'Не верный формат входных параметров. Для регистрации должены быть указаны: email, имя пользователя, пароль',
+                'message' => 'Не верный формат входных параметров. Для регистрации должны быть указаны: email, имя пользователя, пароль',
             ],
             ['email', 'email'],
             [['password'], 'string'],
