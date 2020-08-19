@@ -20,7 +20,7 @@ use Yii;
  *
  * @property Post[] $posts
  */
-class baseUser extends \yii\db\ActiveRecord
+class BaseUser extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

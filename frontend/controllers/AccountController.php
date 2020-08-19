@@ -34,6 +34,7 @@ class AccountController extends BaseController
             return $model->errors;
         }         
     }
+    
     /**
      * @api {post} accounts/register
      * @apiName register

@@ -14,7 +14,7 @@ use Yii;
  *
  * @property User $author
  */
-class basePost extends \yii\db\ActiveRecord
+class BasePost extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

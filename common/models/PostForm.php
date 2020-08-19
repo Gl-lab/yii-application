@@ -77,10 +77,8 @@ class PostForm extends Model
     public function getUserPosts()
     {
         if ($this->validate()) {
-            return Post::find()
-                ->andWhere('authorId = :userId', [':userId' => $this->_user->id])
-                ->limit($this->limit)
-                ->offset($this->offset)
+            return  $this->getBaseQuery()
+                ->andWhere(['authorId' => $this->_user->id])
                 ->all();
         }
         return false;
@@ -89,11 +87,16 @@ class PostForm extends Model
     public function getAllPosts()
     {
         if ($this->validate()) {
-            return Post::find()
-                ->limit($this->limit)
-                ->offset($this->offset)
+            return $this->getBaseQuery()
                 ->all();  
         }
         return false;
+    }
+
+    private function getBaseQuery()
+    {
+        return Post::find()
+            ->limit($this->limit)
+            ->offset($this->offset);
     }
 }

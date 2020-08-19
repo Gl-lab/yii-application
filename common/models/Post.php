@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models;
-use common\models\basePost;
+use common\models\BasePost;
 use Yii;
 
 /**
@@ -14,7 +14,7 @@ use Yii;
  *
  * @property User $author
  */
-class Post extends basePost
+class Post extends BasePost
 {
     
 }

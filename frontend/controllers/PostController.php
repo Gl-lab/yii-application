@@ -19,17 +19,19 @@ class PostController extends BaseController
      *
      * @apiSuccess {Object[]} success.
      */
+
     public function actionNew()
     {
         $model = new PostForm(['scenario' => PostForm::SCENARIO_NEW_POST]);
         $model->load(\Yii::$app->request->post(), '');
         $result = $model->createNewPost();
-        if ($result){
+        if ($result) {
             return $result; 
         } else {
             return $model->errors;
         }
     }
+
     /**
      * @api {get} posts/all
      * @apiName all
@@ -46,12 +48,13 @@ class PostController extends BaseController
         $model = new PostForm(['scenario' => PostForm::SCENARIO_GET_POSTS]);
         $model->load(\Yii::$app->request->get(), '');
         $result = $model->getAllPosts();
-        if ($result){
+        if ($result) {
             return $result; 
         } else {
             return $model->errors;
         }
     }
+
     /**
      * @api {get} posts/my
      * @apiName my
@@ -68,7 +71,7 @@ class PostController extends BaseController
         $model = new PostForm(['scenario' => PostForm::SCENARIO_GET_POSTS]);
         $model->load(\Yii::$app->request->get(), '');
         $result = $model->getUserPosts();
-        if ($result){
+        if ($result) {
             return $result; 
         } else {
             return $model->errors;
