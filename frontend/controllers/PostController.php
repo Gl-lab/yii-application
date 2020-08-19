@@ -9,6 +9,7 @@ use common\models\PostForm;
 class PostController extends BaseController
 {
     public $modelClass = 'Post';
+
     /**
      * @api {post} posts/new
      * @apiName new
@@ -19,7 +20,6 @@ class PostController extends BaseController
      *
      * @apiSuccess {Object[]} success.
      */
-
     public function actionNew()
     {
         $model = new PostForm(['scenario' => PostForm::SCENARIO_NEW_POST]);
